@@ -11,9 +11,9 @@ public static class CalculateAverage
         }
 
         int sum = 0;
-        foreach (int num in numbers)
+        foreach (int value in numbers)
         {
-            sum += num;
+            sum += value;
         }
 
         return (double)sum / numbers.Length;
