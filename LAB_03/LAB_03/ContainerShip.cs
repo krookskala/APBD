@@ -1,44 +1,49 @@
-﻿namespace DefaultNamespace;
-using System;
-using System.Collections.Generic;
-public class ContainerShip
+﻿namespace LAB_03
 {
-    public string Name { get; private set; }
-    public double MaximumSpeed { get; private set; }
-    public int MaximumContainerNumber { get; private set; }
-    public double MaximumWeight { get; private set; }
-    public List<Container> Containers { get; private set; }
-
-    public ContainerShip(string name, double maximumSpeed, int maximumContainerNumber, double maximumWeight)
+    public class ContainerShip
     {
-        Name = name;
-        MaximumSpeed = maximumSpeed;
-        MaximumContainerNumber = maximumContainerNumber;
-        MaximumWeight = maximumWeight;
-        Containers = new List<Container>();
-    }
+        public List<Container> Containers { get; private set; } = new List<Container>();
+        public int MaxSpeed { get; private set; }
+        public int MaxContainerNum { get; private set; }
+        public double MaxWeight { get; private set; }
 
-    public void LoadContainer(Container container)
-    {
-        if (Containers.Count >= MaximumContainerNumber)
-            throw new InvalidOperationException("Ship Is At Maximum Capacity.");
-        if (container.CargoMass + CalculateTotalWeight() > MaximumWeight)
-            throw new InvalidOperationException("Adding This Container Exceeds The Maximum Weight Limit.");
-        Containers.Add(container);
-    }
-
-    public void UnloadContainer(Container container)
-    {
-        Containers.Remove(container);
-    }
-
-    private double CalculateTotalWeight()
-    {
-        double totalWeight = 0;
-        foreach (var container in Containers)
+        public ContainerShip(int maxSpeed, int maxContainerNum, double maxWeight)
         {
-            totalWeight += container.CargoMass + container.TareWeight;
+            MaxSpeed = maxSpeed;
+            MaxContainerNum = maxContainerNum;
+            MaxWeight = maxWeight;
         }
-        return totalWeight;
+
+        public void AddContainer(Container container)
+        {
+            if (Containers.Count >= MaxContainerNum || GetTotalWeight() + container.CargoMass + container.TareWeight > MaxWeight)
+            {
+                throw new Exception("Cannot Add Container: Exceeds Ship Capacity Or Weight Limit.");
+            }
+            Containers.Add(container);
+        }
+
+        public void RemoveContainer(string serialNumber)
+        {
+            var container = Containers.FirstOrDefault(c => c.SerialNumber == serialNumber);
+            if (container != null)
+            {
+                Containers.Remove(container);
+            }
+        }
+
+        private double GetTotalWeight()
+        {
+            return Containers.Sum(c => c.CargoMass + c.TareWeight);
+        }
+
+        public void ListAllContainers()
+        {
+            Console.WriteLine("Listing all containers on the ship:");
+            foreach (var container in Containers)
+            {
+                Console.WriteLine($"Type: {container.GetContainerType()}, Serial Number: {container.SerialNumber}, Cargo Mass: {container.CargoMass} kg");
+            }
+        }
     }
 }
