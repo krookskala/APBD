@@ -1,37 +1,34 @@
-namespace LAB_03;
-
-public abstract class Container
+namespace LAB_03
 {
-    public string SerialNumber { get; private set; }
-    public double CargoMass { get; private set; }
-    public double Height { get; private set; }
-    public double Depth { get; private set; }
-    public double TareWeight { get; private set; }
-    public double MaximumPayload { get; private set; }
-
-    public Container(string serialNumber, double height, double depth, double tareWeight, double maximumPayload)
+    public abstract class Container
     {
-        SerialNumber = serialNumber;
-        Height = height;
-        Depth = depth;
-        TareWeight = tareWeight;
-        MaximumPayload = maximumPayload;
-    }
+        public double CargoMass { get; protected set; }
+        public int Height { get; protected set; }
+        public double TareWeight { get; protected set; }
+        public int Depth { get; protected set; }
+        public string SerialNumber { get; protected set; }
+        public double MaxPayload { get; protected set; }
 
-    public LoadCargo(double cargoMass)
-    {
-        if (cargoMass > MaximumPayload)
-            throw new OverfillException();
-        CargoMass = cargoMass;
-    }
-
-    public void EmptyCargo()
-    {
-        CargoMass = 0;
-    }
-
-    protected string GenerateSerialNumber()
-    {
-        throw new NotImplementedException();
+        protected Container(double cargoMass, int height, double tareWeight, int depth, string serialNumber, double maxPayload)
+        {
+            if (cargoMass < 0 || height < 0 || tareWeight < 0 || depth < 0 || maxPayload < 0)
+            {
+                throw new ArgumentException("Negative Values Are Not Allowed For Container Properties.");
+            }
+    
+            CargoMass = cargoMass;
+            Height = height;
+            TareWeight = tareWeight;
+            Depth = depth;
+            SerialNumber = serialNumber;
+            MaxPayload = maxPayload;
+        }
+        public virtual string GetContainerType()
+        {
+            return this.GetType().Name;
+        }
+        
+        public abstract void LoadCargo(double mass);
+        public abstract void EmptyCargo();
     }
 }
