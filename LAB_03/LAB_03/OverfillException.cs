@@ -1,8 +1,9 @@
-﻿namespace DefaultNamespace;
-using System;
-public class OverfillException : Exception
+﻿namespace LAB_03
 {
-    public OverfillException() : base("Cargo Mass Exceeds Container's Maximum Payload.")
+    public class OverfillException : Exception
     {
+        public OverfillException(string message) : base("Cargo Mass Exceeds Container's Maximum Payload.")
+        {
+        }
     }
 }
