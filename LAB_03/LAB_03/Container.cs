@@ -27,7 +27,6 @@ namespace LAB_03
         {
             return this.GetType().Name;
         }
-        
         public abstract void LoadCargo(double mass);
         public abstract void EmptyCargo();
     }
