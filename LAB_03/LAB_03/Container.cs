@@ -2,7 +2,7 @@ namespace LAB_03
 {
     public abstract class Container
     {
-        public double CargoMass { get; private set; }
+        public double CargoMass { get; protected set; }
         public int Height { get; private set; }
         public double TareWeight { get; private set; }
         public int Depth { get; private set; }
@@ -20,5 +20,7 @@ namespace LAB_03
         }
 
         public abstract string GetContainerType();
+        public virtual void LoadCargo(double mass){}
+
     }
 }

@@ -99,23 +99,50 @@ namespace LAB_03
 
             string serialNumber = GenerateSerialNumber(containerTypeSelection);
 
-            Container container = CreateContainerByType(containerTypeSelection, serialNumber);
-            if (container == null)
+            Container container = null;
+            switch (containerTypeSelection)
             {
-                Console.WriteLine("Container Creation Was Canceled Or Failed. Press Any Key To Continue...");
-                Console.ReadKey();
-                return;
+                case 1: 
+                    bool isHazardous = ReadBool("Is The Liquid Hazardous? (Y/N): ");
+                    container = new LiquidContainer(0, 0, 0, 0, serialNumber, 0, isHazardous);
+                    Console.WriteLine($"Liquid Container {serialNumber} Created. Hazardous: {(isHazardous ? "Yes" : "No")}");
+                    break;
+
+                case 2: 
+                    double pressure = ReadDouble("Enter The Pressure (In Atmospheres): ", true);
+                    container = new GasContainer(0, 0, 0, 0, serialNumber, 0, pressure); 
+                    Console.WriteLine($"Gas Container {serialNumber} Created With Pressure: {pressure} Atmospheres.");
+                    break;
+
+                case 3: 
+                    string productType = ReadString("Enter The Type Of Product: ");
+                    double initialTemperature = ReadDouble("Enter The Initial Temperature (In Celsius): ", true);
+                    container = new RefrigeratedContainer(0, 0, 0, 0, serialNumber, 0, productType, initialTemperature); 
+                    Console.WriteLine($"Adjusting Temperature For {productType}. Current Temperature Is Set To {initialTemperature}°C.");
+                    double newTemperature = ReadDouble("Enter New Temperature (If Needed, Else Repeat Initial): ", true);
+                    ((RefrigeratedContainer)container).AdjustTemperature(newTemperature); 
+                    ((RefrigeratedContainer)container).CheckContainerState();
+                    break;
+                
+                default:
+                    Console.WriteLine("Invalid Container Type Selected.");
+                    Console.ReadKey();
+                    return;
+            }
+            
+            if (container != null)
+            {
+                try
+                {
+                    ships[shipIndex].AddContainer(container);
+                    Console.WriteLine($"Container {serialNumber} Added To The Ship Successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error Adding Container To The Ship: {ex.Message}");
+                }
             }
 
-            try
-            {
-                ships[shipIndex].AddContainer(container);
-                Console.WriteLine($"Container {serialNumber} Added To The Ship Successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error Adding Container To The Ship: {ex.Message}");
-            }
             Console.ReadKey();
         }
 
