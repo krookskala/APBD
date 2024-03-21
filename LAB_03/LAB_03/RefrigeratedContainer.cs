@@ -5,20 +5,20 @@
         public string ProductType { get; private set; }
         public double Temperature { get; private set; }
 
-        public RefrigeratedContainer(double cargoMass, int height, double tareWeight, int depth, string serialNumber,
+        public RefrigeratedContainer(double cargoMass, string cargoUnit, int height, double tareWeight, int depth, string serialNumber,
             double maxPayload, string productType, double temperature)
-            : base(cargoMass, height, tareWeight, depth, serialNumber, maxPayload)
+            : base(cargoMass, "Kg", height, tareWeight, depth, serialNumber, maxPayload)
         {
-            if (!ProductTemperature.ProductTemperatures.ContainsKey(productType))
+            if (!ProductTemperature.IsValidProduct(productType))
             {
-                throw new ArgumentException($"Unknown Product Type: {productType}.");
+                throw new ArgumentException($"Unknown Product Type: {productType}. Please Enter A Product From The List.");
             }
 
-            double requiredTemperature = ProductTemperature.ProductTemperatures[productType];
-            if (temperature < requiredTemperature)
+            var (Min, Max) = ProductTemperature.GetTemperatureRange(productType);
+            if (temperature < Min || temperature > Max)
             {
                 throw new ArgumentException(
-                    $"The Temperature For {productType} Cannot Be Lower Than {requiredTemperature}.");
+                    $"The Temperature For {productType} Must Be Between {Min} And {Max} Degrees Celsius.");
             }
 
             ProductType = productType;
@@ -38,32 +38,6 @@
         public override string GetContainerType()
         {
             return "Refrigerated";
-        }
-
-        public void AdjustTemperature(double newTemperature)
-        {
-            double requiredTemperature = ProductTemperature.ProductTemperatures[ProductType];
-            if (newTemperature < requiredTemperature)
-            {
-                Console.WriteLine(
-                    $"Warning: The New Temperature {newTemperature}°C Is Too Low For {ProductType}, Which Requires At Least {requiredTemperature}°C.");
-            }
-            else
-            {
-                Temperature = newTemperature;
-                Console.WriteLine($"Temperature Adjusted To {Temperature}°C For {ProductType}.");
-            }
-        }
-
-        public void CheckContainerState()
-        {
-            Console.WriteLine(
-                $"Container {SerialNumber} Storing {ProductType} At {Temperature}°C With {CargoMass}/{MaxPayload}kg Loaded.");
-            if (Temperature < ProductTemperature.ProductTemperatures[ProductType])
-            {
-                Console.WriteLine(
-                    $"Warning: Temperature For {ProductType} Is Below Required {ProductTemperature.ProductTemperatures[ProductType]}°C.");
-            }
         }
     }
 }

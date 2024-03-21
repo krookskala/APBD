@@ -1,6 +1,6 @@
 ﻿namespace LAB_03
 {
-    public interface IHazardNotifier
+    public interface IHazardNotification
     {
         void NotifyHazard();
     }
