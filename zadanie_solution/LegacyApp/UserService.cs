@@ -1,72 +1,60 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LegacyApp
 {
     public class UserService
     {
+        private readonly IClientRepository _clientRepository;
+        private readonly IUserCreditService _userCreditService;
+        private readonly IEnumerable<IUserValidator> _validators;
+
+        public UserService(IClientRepository clientRepository, IUserCreditService userCreditService, IEnumerable<IUserValidator> validators)
+        {
+            _validators = new List<IUserValidator>
+            {
+                new UserEmailVerifier(),
+                new UserAgeVerifier(),
+                new UserCreditVerifier()
+            };
+            
+            _clientRepository = clientRepository ?? throw new ArgumentNullException(nameof(clientRepository));
+            _userCreditService = userCreditService ?? throw new ArgumentNullException(nameof(userCreditService));
+            _validators = validators ?? throw new ArgumentNullException(nameof(validators));
+        }
+
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+            var client = _clientRepository.GetById(clientId);
+            if (client == null)
             {
-                return false;
+                throw new ArgumentException($"Client with ID {clientId} does not exist.");
             }
-
-            if (!email.Contains("@") && !email.Contains("."))
-            {
-                return false;
-            }
-
-            var now = DateTime.Now;
-            int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
-
-            if (age < 21)
-            {
-                return false;
-            }
-
-            var clientRepository = new ClientRepository();
-            var client = clientRepository.GetById(clientId);
 
             var user = new User
             {
-                Client = client,
-                DateOfBirth = dateOfBirth,
-                EmailAddress = email,
                 FirstName = firstName,
-                LastName = lastName
+                LastName = lastName,
+                EmailAddress = email,
+                DateOfBirth = dateOfBirth,
+                Client = client
             };
 
-            if (client.Type == "VeryImportantClient")
+            foreach (var validator in _validators)
             {
-                user.HasCreditLimit = false;
-            }
-            else if (client.Type == "ImportantClient")
-            {
-                using (var userCreditService = new UserCreditService())
+                if (!validator.Validate(user))
                 {
-                    int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                    creditLimit = creditLimit * 2;
-                    user.CreditLimit = creditLimit;
-                }
-            }
-            else
-            {
-                user.HasCreditLimit = true;
-                using (var userCreditService = new UserCreditService())
-                {
-                    int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                    user.CreditLimit = creditLimit;
+                    return false;
                 }
             }
 
-            if (user.HasCreditLimit && user.CreditLimit < 500)
+            if (!user.HasCreditLimit || user.CreditLimit >= 500)
             {
-                return false;
+                UserDataAccess.AddUser(user);
+                return true;
             }
 
-            UserDataAccess.AddUser(user);
-            return true;
+            return false;
         }
     }
 }
