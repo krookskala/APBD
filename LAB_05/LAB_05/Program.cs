@@ -1,5 +1,6 @@
 using LAB_05.Database;
 using LAB_05.Models;
+using LAB_05.Validator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,11 +25,14 @@ app.MapControllers();
 app.MapGet("/animals", () => StaticDatabase.Animals);
 app.MapGet("/animals/{id}", (int id) => StaticDatabase.Animals.FirstOrDefault(a => a.Id == id));
 app.MapPost("/animals", (Animal animal) => {
-    var newId = StaticDatabase.Animals.Any() ? StaticDatabase.Animals.Max(a => a.Id) + 1 : 1;
-    animal.Id = newId;
+    if (!IdValidator.IsValid(animal.Id, StaticDatabase.Animals))
+    {
+        animal.Id = StaticDatabase.Animals.Any() ? StaticDatabase.Animals.Max(a => a.Id) + 1 : 1;
+    }
     StaticDatabase.Animals.Add(animal);
     return Results.Created($"/animals/{animal.Id}", animal);
 });
+
 
 app.MapPut("/animals/{id}", (int id, Animal updatedAnimal) => {
     var animal = StaticDatabase.Animals.FirstOrDefault(a => a.Id == id);
@@ -54,12 +58,15 @@ app.MapGet("/animals/{animalId}/visits", (int animalId) => {
 
 app.MapPost("/animals/{animalId}/visits", (int animalId, Visit visit) => {
     var animal = StaticDatabase.Animals.FirstOrDefault(a => a.Id == animalId);
-    if (animal == null) return Results.NotFound();
-    var newVisitId = animal.Visits.Any() ? animal.Visits.Max(v => v.Id) + 1 : 1;
-    visit.Id = newVisitId;
+    if (animal == null) return Results.NotFound($"Animal with ID {animalId} not found.");
+    
+    if (!IdValidator.IsValid(visit.Id, animal.Visits))
+    {
+        visit.Id = animal.Visits.Any() ? animal.Visits.Max(v => v.Id) + 1 : 1;
+    }
+    visit.AnimalId = animalId; 
     animal.Visits.Add(visit);
     return Results.Created($"/animals/{animalId}/visits/{visit.Id}", visit);
 });
 
 app.Run();
-
