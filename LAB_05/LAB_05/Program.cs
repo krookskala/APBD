@@ -34,8 +34,8 @@ app.MapPost("/animals", (Animal animal) => {
 });
 
 
-app.MapPut("/animals/{id}", (int id, Animal updatedAnimal) => {
-    var animal = StaticDatabase.Animals.FirstOrDefault(a => a.Id == id);
+app.MapPut("/animals", (Animal updatedAnimal) => {
+    var animal = StaticDatabase.Animals.FirstOrDefault(a => a.Id == updatedAnimal.Id);
     if (animal == null) return Results.NotFound();
     animal.Name = updatedAnimal.Name;
     animal.Category = updatedAnimal.Category;
