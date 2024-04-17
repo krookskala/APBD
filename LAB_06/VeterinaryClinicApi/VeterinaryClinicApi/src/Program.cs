@@ -10,8 +10,19 @@ builder.Services.AddScoped<IAnimalsRepository, AnimalsRepository>();
 builder.Services.AddScoped<IAnimalsService, AnimalsService>();
 
 var app = builder.Build();
+var connectionString = app.Configuration.GetConnectionString("VeterinaryDb");
 
-app.Configuration.GetConnectionString("Default");
+if (connectionString != null)
+{
+    builder.Services.AddScoped<IAnimalsRepository>(provider =>
+    {
+        return new AnimalsRepository(connectionString);
+    });
+}
+else
+{
+    throw new InvalidOperationException("Connection String 'VeterinaryDb' Not Found in appsettings.json");
+}
 
 if (app.Environment.IsDevelopment())
 {
