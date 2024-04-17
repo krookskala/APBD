@@ -3,26 +3,20 @@ using VeterinaryClinicApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-builder.Services.AddScoped<IAnimalsRepository, AnimalsRepository>();
-builder.Services.AddScoped<IAnimalsService, AnimalsService>();
-
-var app = builder.Build();
-var connectionString = app.Configuration.GetConnectionString("VeterinaryDb");
-
-if (connectionString != null)
-{
-    builder.Services.AddScoped<IAnimalsRepository>(provider =>
-    {
-        return new AnimalsRepository(connectionString);
-    });
-}
-else
+var connectionString = builder.Configuration.GetConnectionString("VeterinaryDb");
+if (connectionString == null)
 {
     throw new InvalidOperationException("Connection String 'VeterinaryDb' Not Found in appsettings.json");
 }
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+
+builder.Services.AddScoped<IAnimalsRepository>(provider => new AnimalsRepository(connectionString));
+builder.Services.AddScoped<IAnimalsService, AnimalsService>();
+
+var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
