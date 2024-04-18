@@ -41,17 +41,8 @@ namespace VeterinaryClinicApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAnimal(int id, [FromBody] Animal animal)
         {
-            var existingAnimal = await _animalsService.GetAnimalByIdAsync(id);
-            if (existingAnimal == null)
-            {
-                var addedAnimal = await _animalsService.AddAnimalAsync(animal);
-                return CreatedAtAction(nameof(GetAnimalById), new { id = addedAnimal.Id }, addedAnimal);
-            }
-            else
-            {
-                await _animalsService.UpdateAnimalAsync(id, animal);
-                return NoContent(); 
-            }
+            await _animalsService.UpdateAnimalAsync(id, animal);
+            return NoContent();
         }
 
 
