@@ -28,7 +28,7 @@ namespace VeterinaryClinicApi.Repositories
                         {
                             animals.Add(new Animal
                             {
-                                IdAnimal = reader.GetInt32(0),
+                                Id = reader.GetInt32(0),
                                 Name = reader.GetString(1),
                                 Description = reader.IsDBNull(2) ? null : reader.GetString(2),
                                 Category = reader.GetString(3),
@@ -57,7 +57,7 @@ namespace VeterinaryClinicApi.Repositories
                         {
                             return new Animal
                             {
-                                IdAnimal = reader.GetInt32(0),
+                                Id = reader.GetInt32(0),
                                 Name = reader.GetString(1),
                                 Description = reader.IsDBNull(2) ? null : reader.GetString(2),
                                 Category = reader.GetString(3),
@@ -74,23 +74,28 @@ namespace VeterinaryClinicApi.Repositories
         public async Task<Animal> AddAnimalAsync(Animal animal)
         {
             var query =
-                "INSERT INTO Animal (Name, Description, Category, Area) OUTPUT INSERTED.IdAnimal VALUES (@Name, @Description, @Category, @Area);";
+                "INSERT INTO Animal (Name, Description, Category, Area) VALUES (@Name, @Description, @Category, @Area); SELECT SCOPE_IDENTITY();";
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Name", animal.Name);
-                    command.Parameters.AddWithValue("@Description", animal.Description);
+                    command.Parameters.AddWithValue("@Description", (object)animal.Description ?? DBNull.Value);
                     command.Parameters.AddWithValue("@Category", animal.Category);
                     command.Parameters.AddWithValue("@Area", animal.Area);
 
-                    animal.IdAnimal = (int)await command.ExecuteScalarAsync();
+                    var id = await command.ExecuteScalarAsync();
+                    if (id != null && int.TryParse(id.ToString(), out int generatedId))
+                    {
+                        animal.Id = generatedId;
+                    }
                 }
             }
 
             return animal;
         }
+
 
         public async Task<bool> UpdateAnimalAsync(int id, Animal animal)
         {

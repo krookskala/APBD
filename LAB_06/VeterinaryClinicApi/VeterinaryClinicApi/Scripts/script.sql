@@ -1,5 +1,5 @@
 ﻿CREATE TABLE Animal (
-                        IdAnimal INT PRIMARY KEY,
+                        Id INT PRIMARY KEY,
                         Name NVARCHAR(200) NOT NULL,
                         Description NVARCHAR(200),
                         Category NVARCHAR(200) NOT NULL,
