@@ -16,8 +16,8 @@ namespace WarehouseAPI.Controllers
             _warehouseRepository = warehouseRepository;
         }
 
-        [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(InsertProductDto productWarehouseDto)
+        [HttpPost("add-product")]
+        public async Task<IActionResult> AddProduct([FromBody] InsertProductDto productWarehouseDto)
         {
             if (productWarehouseDto.Amount <= 0)
             {
@@ -56,8 +56,8 @@ namespace WarehouseAPI.Controllers
             return CreatedAtAction(nameof(AddProduct), new { id = newId }, productWarehouseDto);
         }
 
-        [HttpPost("warehouse/procedure")]
-        public async Task<IActionResult> AddProductWithProcedure(InsertProductDto productWarehouseDto)
+        [HttpPost("procedure")]
+        public async Task<IActionResult> AddProductWithProcedure([FromBody] InsertProductDto productWarehouseDto)
         {
             try
             {
