@@ -177,7 +177,7 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<Emp> Task1()
         {
-            IEnumerable<Emp> result = Emps.Where(emp => emp.Job == "Backend programmer");
+            IEnumerable<Emp> result = Emps.Where(emp => emp.Job.Equals("Backend programmer"));
             return result;
         }
 
@@ -186,7 +186,7 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<Emp> Task2()
         {
-            IEnumerable<Emp> result = Emps.Where(emp => emp.Job == "Frontend programmer" && emp.Salary > 1000).OrderByDescending(emp => emp.Ename);
+            IEnumerable<Emp> result = Emps.Where(emp => emp.Job.Equals("Frontend programmer") && emp.Salary > 1000).OrderByDescending(emp => emp.Ename);
             return result;
         }
         
@@ -204,7 +204,7 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<Emp> Task4()
         {
-            IEnumerable<Emp> result = Emps.Where(e => e.Salary == Emps.Max(emp => emp.Salary));
+            IEnumerable<Emp> result = Emps.Where(e => e.Salary.Equals(Emps.Max(emp => emp.Salary)));
             return result;
         }
 
@@ -243,7 +243,7 @@ namespace LinqTutorials
         /// </summary>
         public static bool Task8()
         {
-            bool result = Emps.Any(e => e.Job == "Backend programmer");
+            bool result = Emps.Any(e => e.Job.Equals("Backend programmer"));
             return result;
         }
 
@@ -253,7 +253,7 @@ namespace LinqTutorials
         /// </summary>
         public static Emp Task9()
         {
-            Emp result = Emps.Where(e => e.Job == "Frontend programmer").OrderByDescending(emp => emp.HireDate).Take(1).FirstOrDefault();
+            Emp result = Emps.Where(e => e.Job.Equals("Frontend programmer")).OrderByDescending(emp => emp.HireDate).Take(1).FirstOrDefault();
             return result;
         }
 
@@ -331,7 +331,7 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<object> Task15()
         {
-            IEnumerable<object> result = Emps.Where(emp => emp.Job.Contains("A")).GroupBy(emp => emp.Job).Where(group => group.Count() > 2).Select(group => new { Job = group.Key, Count = group.Count() }).OrderByDescending(x => x.Count);
+            IEnumerable<object> result = Emps.Where(emp => emp.Job.Contains("A", StringComparison.OrdinalIgnoreCase)).GroupBy(emp => emp.Job).Where(group => group.Count() > 2).Select(group => new { Job = group.Key, Count = group.Count() }).OrderByDescending(x => x.Count);
             //result =
             return result;
         }
