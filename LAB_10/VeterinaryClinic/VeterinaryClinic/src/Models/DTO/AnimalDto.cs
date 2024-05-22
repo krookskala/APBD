@@ -11,7 +11,7 @@ namespace VeterinaryClinic.Models.DTO
         
         [MinLength(0)]
         [MaxLength(200)]
-        public required string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [MinLength(1)]
