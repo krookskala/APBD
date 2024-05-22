@@ -51,13 +51,13 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Animal>> AddAnimal(AnimalDto animalDto)
+        public async Task<ActionResult<Animal>> AddAnimal([FromBody] AnimalDto animalDto)
         {
             var animal = ConvertDtoToAnimal(animalDto);
             _context.Animals.Add(animal);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetAnimal), new { id = animal.Id }, animal);
+            return CreatedAtAction(nameof(AddAnimal), new { id = animal.Id }, animal);
         }
 
         private static Animal ConvertDtoToAnimal(AnimalDto animalDto)
@@ -72,7 +72,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Animal>> UpdateAnimal(int id, AnimalDto animalDto)
+        public async Task<ActionResult<Animal>> UpdateAnimal(int id, [FromBody] AnimalDto animalDto)
         {
             var animal = await _context.Animals.FindAsync(id);
 
@@ -82,7 +82,7 @@ namespace VeterinaryClinic.Controllers
             }
 
             animal.Name = animalDto.Name;
-            animal.Description = string.IsNullOrEmpty(animalDto.Description) ? null : animalDto.Description;
+            animal.Description = animalDto.Description;
             animal.Category = animalDto.Category;
             animal.Area = animalDto.Area;
 
