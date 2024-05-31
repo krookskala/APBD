@@ -1,0 +1,210 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Scripts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="obj\**" />
+      <Content Include="bin\Debug\net8.0\af\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ar\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\Azure.Core.dll" />
+      <Content Include="bin\Debug\net8.0\Azure.Identity.dll" />
+      <Content Include="bin\Debug\net8.0\az\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\bg\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\bn-BD\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+      <Content Include="bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\da\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+      <Content Include="bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\dotnet-aspnet-codegenerator-design.dll" />
+      <Content Include="bin\Debug\net8.0\el\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+      <Content Include="bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fa\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fi-FI\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr-BE\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+      <Content Include="bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\he\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\hr\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\Humanizer.dll" />
+      <Content Include="bin\Debug\net8.0\hu\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\hy\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\id\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\is\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+      <Content Include="bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko-KR\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Features.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+      <Content Include="bin\Debug\net8.0\ku\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\lv\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Build.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Build.Framework.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Features.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.Elfie.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.Features.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.Razor.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.Scripting.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Data.SqlClient.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Data.Sqlite.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.DiaSymReader.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.DotNet.Scaffolding.Shared.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Sqlite.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Identity.Client.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.NET.StringTools.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.OpenApi.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.SqlServer.Server.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll" />
+      <Content Include="bin\Debug\net8.0\Mono.TextTemplating.dll" />
+      <Content Include="bin\Debug\net8.0\ms-MY\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\mt\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\nb-NO\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\nb\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\Newtonsoft.Json.dll" />
+      <Content Include="bin\Debug\net8.0\nl\Humanizer.resources.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.Common.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.Configuration.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.DependencyResolver.Core.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.Frameworks.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.LibraryModel.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.Packaging.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.ProjectModel.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.Protocol.dll" />
+      <Content Include="bin\Debug\net8.0\NuGet.Versioning.dll" />
+      <Content Include="bin\Debug\net8.0\SQLitePCLRaw.batteries_v2.dll" />
+      <Content Include="bin\Debug\net8.0\SQLitePCLRaw.core.dll" />
+      <Content Include="bin\Debug\net8.0\SQLitePCLRaw.provider.e_sqlite3.dll" />
+      <Content Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll" />
+      <Content Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll" />
+      <Content Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll" />
+      <Content Include="bin\Debug\net8.0\System.CodeDom.dll" />
+      <Content Include="bin\Debug\net8.0\System.Composition.AttributedModel.dll" />
+      <Content Include="bin\Debug\net8.0\System.Composition.Convention.dll" />
+      <Content Include="bin\Debug\net8.0\System.Composition.Hosting.dll" />
+      <Content Include="bin\Debug\net8.0\System.Composition.Runtime.dll" />
+      <Content Include="bin\Debug\net8.0\System.Composition.TypedParts.dll" />
+      <Content Include="bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll" />
+      <Content Include="bin\Debug\net8.0\System.Drawing.Common.dll" />
+      <Content Include="bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll" />
+      <Content Include="bin\Debug\net8.0\System.Memory.Data.dll" />
+      <Content Include="bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll" />
+      <Content Include="bin\Debug\net8.0\System.Runtime.Caching.dll" />
+      <Content Include="bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll" />
+      <Content Include="bin\Debug\net8.0\System.Security.Permissions.dll" />
+      <Content Include="bin\Debug\net8.0\System.Windows.Extensions.dll" />
+      <Content Include="bin\Debug\net8.0\VeterinaryClinic.deps.json" />
+      <Content Include="bin\Debug\net8.0\VeterinaryClinic.dll" />
+      <Content Include="bin\Debug\net8.0\VeterinaryClinic.exe" />
+      <Content Include="bin\Debug\net8.0\VeterinaryClinic.pdb" />
+      <Content Include="bin\Debug\net8.0\VeterinaryClinic.runtimeconfig.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
+    </ItemGroup>
+
+</Project>
