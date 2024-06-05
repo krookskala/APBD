@@ -2,7 +2,7 @@
 
 namespace VeterinaryClinic.DTO
 {
-    public class VisitCreateDto
+    public class GetVisitDto
     {
         [Required(ErrorMessage = "The EmployeeId Field Is Required.")]
         public int EmployeeId { get; set; }

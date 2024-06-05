@@ -12,10 +12,10 @@ namespace VeterinaryClinic.Services
         
         public AnimalContext(DbContextOptions<AnimalContext> options) : base(options) { }
 
-        public DbSet<Animal> Animals { get; set; }
-        public DbSet<AnimalTypes> AnimalTypes { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<Visit> Visits { get; set; }
+        public virtual DbSet<Animal> Animals { get; set; } = null!;
+        public virtual DbSet<AnimalTypes> AnimalTypes { get; set; } = null!;
+        public virtual DbSet<Employee> Employees { get; set; } = null!;
+        public virtual DbSet<Visit> Visits { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,8 +28,9 @@ namespace VeterinaryClinic.Services
                 entity.Property(e => e.RowVersion).IsRowVersion();
 
                 entity.HasOne(a => a.AnimalType)
-                      .WithMany(at => at.Animals)
-                      .HasForeignKey(a => a.AnimalTypesId);
+                    .WithMany(at => at.Animals)
+                    .HasForeignKey(a => a.AnimalTypesId)
+                    .IsRequired();
             });
 
             modelBuilder.Entity<AnimalTypes>(entity =>

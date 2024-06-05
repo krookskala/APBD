@@ -19,7 +19,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Animal>>> GetAnimals(string queryBy = "name")
+        public async Task<ActionResult<IEnumerable<GetAnimalDto>>> GetAnimals(string queryBy = "name")
         {
             if (!IsValidQueryBy(queryBy.ToLower()))
             {
@@ -28,13 +28,22 @@ namespace VeterinaryClinic.Controllers
 
             try
             {
-                var sortedAnimals = queryBy.ToLower() switch
+                IQueryable<Animal> sortedAnimals = queryBy.ToLower() switch
                 {
                     "description" => _context.Animals.Include(a => a.AnimalType).OrderBy(a => a.Description),
                     _ => _context.Animals.Include(a => a.AnimalType).OrderBy(a => a.Name)
                 };
 
-                return await sortedAnimals.ToListAsync();
+                var result = await sortedAnimals.ToListAsync();
+                var dtoList = result.Select(a => new GetAnimalDto
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Description = a.Description,
+                    AnimalType = a.AnimalType.Name
+                }).ToList();
+
+                return Ok(dtoList);
             }
             catch (Exception ex)
             {
@@ -42,8 +51,9 @@ namespace VeterinaryClinic.Controllers
             }
         }
 
+
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Animal>> GetAnimal(int id)
+        public async Task<ActionResult<GetAnimalDto>> GetAnimal(int id)
         {
             try
             {
@@ -54,7 +64,15 @@ namespace VeterinaryClinic.Controllers
                     return NotFound($"Animal With ID {id} Not Found!");
                 }
 
-                return Ok(animal);
+                var dto = new GetAnimalDto
+                {
+                    Id = animal.Id,
+                    Name = animal.Name,
+                    Description = animal.Description,
+                    AnimalType = animal.AnimalType.Name
+                };
+
+                return Ok(dto);
             }
             catch (Exception ex)
             {
@@ -63,14 +81,14 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Animal>> AddAnimal([FromBody] AnimalDto animalDto)
+        public async Task<ActionResult<Animal>> AddAnimal([FromBody] AddAnimalDto addAnimalDto)
         {
-            if (animalDto == null)
+            if (addAnimalDto == null)
             {
                 return BadRequest("Invalid Animal Data.");
             }
 
-            var animalType = await _context.AnimalTypes.FirstOrDefaultAsync(at => at.Name == animalDto.AnimalType);
+            var animalType = await _context.AnimalTypes.FirstOrDefaultAsync(at => at.Name.ToLower() == addAnimalDto.AnimalType.ToLower());
 
             if (animalType == null)
             {
@@ -79,9 +97,9 @@ namespace VeterinaryClinic.Controllers
 
             var animal = new Animal
             {
-                Name = animalDto.Name,
-                Description = animalDto.Description,
-                AnimalType = animalType
+                Name = addAnimalDto.Name,
+                Description = addAnimalDto.Description,
+                AnimalTypesId = animalType.Id
             };
 
             _context.Animals.Add(animal);
@@ -91,9 +109,9 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateAnimal(int id, [FromBody] AnimalDto animalDto)
+        public async Task<ActionResult<Animal>> UpdateAnimal(int id, [FromBody] AnimalUpdateDto updateAnimalDto)
         {
-            if (animalDto == null)
+            if (updateAnimalDto == null!)
             {
                 return BadRequest("Invalid Animal Data.");
             }
@@ -107,8 +125,8 @@ namespace VeterinaryClinic.Controllers
 
             var currentRowVersion = animal.RowVersion;
 
-            animal.Name = animalDto.Name;
-            animal.Description = animalDto.Description;
+            animal.Name = updateAnimalDto.Name;
+            animal.Description = updateAnimalDto.Description;
 
             _context.Entry(animal).State = EntityState.Modified;
             _context.Entry(animal).OriginalValues["RowVersion"] = currentRowVersion;

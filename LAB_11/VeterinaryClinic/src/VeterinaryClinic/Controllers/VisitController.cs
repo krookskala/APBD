@@ -18,7 +18,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VisitDto>>> GetVisits()
+        public async Task<ActionResult<IEnumerable<GetVisitDto>>> GetVisits()
         {
             var visits = await _context.Visits
                 .Include(v => v.Employee)
@@ -26,17 +26,18 @@ namespace VeterinaryClinic.Controllers
                 .OrderBy(v => v.Date)
                 .ToListAsync();
 
-            return Ok(visits.Select(v => new VisitDto
+            var result = visits.Select(v => new GetVisitDto
             {
-                Id = v.Id,
-                EmployeeName = v.Employee.Name,
-                AnimalName = v.Animal.Name,
+                EmployeeId = v.EmployeeId,
+                AnimalId = v.AnimalId,
                 Date = v.Date
-            }));
+            }).ToList();
+
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<VisitDto>> GetVisit(int id)
+        public async Task<ActionResult<GetVisitDto>> GetVisit(int id)
         {
             var visit = await _context.Visits
                 .Include(v => v.Employee)
@@ -48,11 +49,10 @@ namespace VeterinaryClinic.Controllers
                 return NotFound($"Visit With ID {id} Not Found!");
             }
 
-            var visitDto = new VisitDto
+            var visitDto = new GetVisitDto
             {
-                Id = visit.Id,
-                EmployeeName = visit.Employee.Name,
-                AnimalName = visit.Animal.Name,
+                EmployeeId = visit.EmployeeId,
+                AnimalId = visit.AnimalId,
                 Date = visit.Date
             };
 
@@ -60,36 +60,40 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<VisitDto>> AddVisit([FromBody] VisitCreateDto visitCreateDto)
+        public async Task<ActionResult<GetVisitDto>> PostVisit([FromBody] GetVisitDto getVisitDto)
         {
-            if (visitCreateDto == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid visit data.");
+                return BadRequest(ModelState);
             }
 
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == visitCreateDto.EmployeeId);
-            var animal = await _context.Animals.FirstOrDefaultAsync(a => a.Id == visitCreateDto.AnimalId);
-
-            if (employee == null || animal == null)
+            var employee = await _context.Employees.FindAsync(getVisitDto.EmployeeId);
+            if (employee == null)
             {
-                return BadRequest("The Provided EmployeeId or AnimalId Is Not Represented In The Database.");
+                return BadRequest("EmployeeId Does Not Exist.");
+            }
+
+            var animal = await _context.Animals.FindAsync(getVisitDto.AnimalId);
+            if (animal == null)
+            {
+                return BadRequest("AnimalId Is Not Represented In The Database.");
             }
 
             var visit = new Visit
             {
-                EmployeeId = visitCreateDto.EmployeeId,
-                AnimalId = visitCreateDto.AnimalId,
-                Date = visitCreateDto.Date
+                EmployeeId = getVisitDto.EmployeeId,
+                AnimalId = getVisitDto.AnimalId,
+                Date = getVisitDto.Date
             };
+
 
             _context.Visits.Add(visit);
             await _context.SaveChangesAsync();
 
-            var visitDto = new VisitDto
+            var visitDto = new GetVisitDto
             {
-                Id = visit.Id,
-                EmployeeName = employee.Name,
-                AnimalName = animal.Name,
+                EmployeeId = visit.EmployeeId,
+                AnimalId = visit.AnimalId,
                 Date = visit.Date
             };
 
@@ -97,23 +101,26 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateVisit(int id, [FromBody] VisitUpdateDto visitUpdateDto)
+        public async Task<IActionResult> PutVisit(int id, [FromBody] VisitUpdateDto visitUpdateDto)
         {
-            if (visitUpdateDto == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid visit data.");
+                return BadRequest(ModelState);
             }
 
-            var visit = await _context.Visits.FirstOrDefaultAsync(v => v.Id == id);
+            var visit = await _context.Visits.FindAsync(id);
 
             if (visit == null)
             {
                 return NotFound($"Visit With ID {id} Not Found!");
             }
 
+            visit.EmployeeId = visitUpdateDto.EmployeeId;
+            visit.AnimalId = visitUpdateDto.AnimalId;
             visit.Date = visitUpdateDto.Date;
 
             _context.Entry(visit).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();
